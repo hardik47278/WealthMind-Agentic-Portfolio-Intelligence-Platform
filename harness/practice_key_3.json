@@ -1,0 +1,59 @@
+{
+  "generated_from": "reference truth engine",
+  "seed": 20260802,
+  "surface_half": "A",
+  "as_of": "2026-07-31",
+  "questions": {
+    "q_001": {
+      "kind": "cash_balance",
+      "category": "exact_value",
+      "client_id": "cli_1014",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": "15386.78",
+        "citations": [
+          "cli_1014"
+        ]
+      },
+      "params": {
+        "client_id": "cli_1014"
+      }
+    },
+    "q_002": {
+      "kind": "largest_deposit",
+      "category": "exact_value",
+      "client_id": "cli_1014",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": "19342.61",
+        "citations": [
+          "txn_104543"
+        ]
+      },
+      "params": {
+        "client_id": "cli_1014"
+      }
+    },
+    "q_003": {
+      "kind": "dividend_year",
+      "category": "exact_value",
+      "client_id": "cli_1024",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": "7.13",
+        "citations": [
+          "txn_108015",
+          "txn_108234"
+        ]
+      },
+      "params": {
+        "client_id": "cli_1024",
+        "symbol": "MSFT",
+        "year": 2024
+      }
+    }
+  }
+}

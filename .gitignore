@@ -1,8 +1,43 @@
+# Python
 __pycache__/
-*.pyc
-runs/
-.env
-.venv/
+*.py[cod]
+*.pyo
+
+# Virtual environment
 venv/
-node_modules/
+.venv/
+env/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Logs / debug
+*.log
+debug_output.txt
+service_log.txt
+team_run.txt
+
+# Generated / runtime files
+runs/
+*.tmp
+
+# Python tooling
+.pytest_cache/
+.mypy_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local test / assessment files
+harness/*_key.json
+questions/*.jsonl

@@ -1,0 +1,208 @@
+{
+  "generated_from": "reference truth engine",
+  "seed": 20260802,
+  "surface_half": "A",
+  "as_of": "2026-07-31",
+  "questions": {
+    "q_041": {
+      "kind": "route_book_cash",
+      "category": "routing",
+      "client_id": "cli_1014",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": null,
+        "citations": [],
+        "expect_roles": [
+          "router",
+          "book_qa"
+        ],
+        "route_only": true
+      },
+      "params": {
+        "client_id": "cli_1014"
+      }
+    },
+    "q_056": {
+      "kind": "market_return",
+      "category": "market_return",
+      "client_id": "cli_1008",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": "-4.80",
+        "citations": [
+          "AMD"
+        ],
+        "market": true
+      },
+      "params": {
+        "client_id": "cli_1008",
+        "symbol": "AMD",
+        "from": "2025-07-01",
+        "to": "2026-07-01"
+      }
+    },
+    "q_050": {
+      "kind": "multi_kyc_holdings",
+      "category": "multi_agent",
+      "client_id": "cli_1024",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": "10",
+        "citations": [
+          "cli_1024",
+          "kyc_1024",
+          "rev_724"
+        ],
+        "expect_roles": [
+          "router",
+          "kyc_profile",
+          "book_qa"
+        ]
+      },
+      "params": {
+        "client_id": "cli_1024"
+      }
+    },
+    "q_048": {
+      "kind": "route_compliance_scope",
+      "category": "routing",
+      "client_id": "cli_1001",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": null,
+        "citations": [],
+        "expect_roles": [
+          "router",
+          "compliance"
+        ],
+        "route_only": true
+      },
+      "params": {
+        "client_id": "cli_1001",
+        "other_id": "cli_1017",
+        "other_name": "Meera Shetty"
+      }
+    },
+    "q_066": {
+      "kind": "rebalance_drift",
+      "category": "rebalance_drift",
+      "client_id": "cli_1006",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": "-32.15",
+        "citations": [
+          "pos_1006_JPM",
+          "rev_706"
+        ],
+        "market": true
+      },
+      "params": {
+        "client_id": "cli_1006",
+        "symbol": "JPM"
+      }
+    },
+    "q_072": {
+      "kind": "unsourced_news",
+      "category": "unsourced_instrument",
+      "client_id": "cli_1018",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": null,
+        "citations": [],
+        "abstain": true
+      },
+      "params": {
+        "client_id": "cli_1018",
+        "symbol": "WMT"
+      }
+    },
+    "q_049": {
+      "kind": "multi_notes_cash",
+      "category": "multi_agent",
+      "client_id": "cli_1017",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": "21337.17",
+        "citations": [
+          "cli_1017",
+          "note_5065",
+          "note_5066",
+          "note_5067",
+          "note_5068",
+          "note_5069"
+        ],
+        "expect_roles": [
+          "router",
+          "notes_desk",
+          "book_qa"
+        ]
+      },
+      "params": {
+        "client_id": "cli_1017"
+      }
+    },
+    "q_060": {
+      "kind": "sector_exposure_2",
+      "category": "sector_exposure",
+      "client_id": "cli_1003",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": "21.80",
+        "citations": [
+          "pos_1003_META"
+        ],
+        "market": true
+      },
+      "params": {
+        "client_id": "cli_1003",
+        "sector": "Communication Services"
+      }
+    },
+    "q_044": {
+      "kind": "route_kyc_risk",
+      "category": "routing",
+      "client_id": "cli_1025",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": null,
+        "citations": [],
+        "expect_roles": [
+          "router",
+          "kyc_profile"
+        ],
+        "route_only": true
+      },
+      "params": {
+        "client_id": "cli_1025"
+      }
+    },
+    "q_046": {
+      "kind": "route_notes",
+      "category": "routing",
+      "client_id": "cli_1013",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": null,
+        "citations": [],
+        "expect_roles": [
+          "router",
+          "notes_desk"
+        ],
+        "route_only": true
+      },
+      "params": {
+        "client_id": "cli_1013"
+      }
+    }
+  }
+}

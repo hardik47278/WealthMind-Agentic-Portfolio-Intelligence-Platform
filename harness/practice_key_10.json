@@ -1,0 +1,179 @@
+{
+  "generated_from": "reference truth engine",
+  "seed": 20260802,
+  "surface_half": "A",
+  "as_of": "2026-07-31",
+  "questions": {
+    "q_001": {
+      "kind": "cash_balance",
+      "category": "exact_value",
+      "client_id": "cli_1014",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": "15386.78",
+        "citations": [
+          "cli_1014"
+        ]
+      },
+      "params": {
+        "client_id": "cli_1014"
+      }
+    },
+    "q_002": {
+      "kind": "largest_deposit",
+      "category": "exact_value",
+      "client_id": "cli_1014",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": "19342.61",
+        "citations": [
+          "txn_104543"
+        ]
+      },
+      "params": {
+        "client_id": "cli_1014"
+      }
+    },
+    "q_003": {
+      "kind": "dividend_year",
+      "category": "exact_value",
+      "client_id": "cli_1024",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": "7.13",
+        "citations": [
+          "txn_108015",
+          "txn_108234"
+        ]
+      },
+      "params": {
+        "client_id": "cli_1024",
+        "symbol": "MSFT",
+        "year": 2024
+      }
+    },
+    "q_004": {
+      "kind": "first_buy",
+      "category": "exact_value",
+      "client_id": "cli_1023",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": "2025-02-14",
+        "citations": [
+          "txn_107865"
+        ]
+      },
+      "params": {
+        "client_id": "cli_1023",
+        "symbol": "KO"
+      }
+    },
+    "q_005": {
+      "kind": "sell_count_month",
+      "category": "exact_value",
+      "client_id": "cli_1014",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": "8",
+        "citations": [
+          "cli_1014"
+        ]
+      },
+      "params": {
+        "client_id": "cli_1014",
+        "ym": "2025-01"
+      }
+    },
+    "q_006": {
+      "kind": "buy_count_month",
+      "category": "exact_value",
+      "client_id": "cli_1024",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": "14",
+        "citations": [
+          "cli_1024"
+        ]
+      },
+      "params": {
+        "client_id": "cli_1024",
+        "ym": "2024-07"
+      }
+    },
+    "q_007": {
+      "kind": "position_qty",
+      "category": "exact_value",
+      "client_id": "cli_1014",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": "2.9849",
+        "citations": [
+          "pos_1014_AAPL"
+        ]
+      },
+      "params": {
+        "client_id": "cli_1014",
+        "symbol": "AAPL"
+      }
+    },
+    "q_008": {
+      "kind": "employer",
+      "category": "exact_value",
+      "client_id": "cli_1003",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": "Kaveri Analytics",
+        "citations": [
+          "kyc_1003"
+        ],
+        "free_text_value": true
+      },
+      "params": {
+        "client_id": "cli_1003"
+      }
+    },
+    "q_009": {
+      "kind": "cash_asof",
+      "category": "temporal",
+      "client_id": "cli_1014",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": "55112.64",
+        "citations": [
+          "cli_1014"
+        ]
+      },
+      "params": {
+        "client_id": "cli_1014",
+        "asof": "2026-07-28"
+      }
+    },
+    "q_010": {
+      "kind": "qty_asof",
+      "category": "temporal",
+      "client_id": "cli_1014",
+      "stability_of": null,
+      "chaos": "off",
+      "expected": {
+        "value": "7.9008",
+        "citations": [
+          "cli_1014"
+        ]
+      },
+      "params": {
+        "client_id": "cli_1014",
+        "symbol": "AAPL",
+        "asof": "2026-07-10"
+      }
+    }
+  }
+}
