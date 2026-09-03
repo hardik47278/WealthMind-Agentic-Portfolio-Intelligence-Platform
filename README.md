@@ -199,53 +199,65 @@ Many questions are not single-retrieval problems. They require identifying multi
 
 We addressed this through agentic planning and query decomposition rather than relying on a single retrieval step.
 
-Tool Selection & Similar Tools
+Tool Selection & Similar-Tool Ambiguity
 
-A key challenge in agentic systems is selecting the correct tool when multiple tools have similar or overlapping descriptions.
+One challenge was that multiple tools could appear relevant to the same query. The agent could select a semantically similar tool even when that tool was not appropriate for the required data or calculation.
 
-For example, two tools may both appear relevant to a query, but differ in:
+How We Addressed It
 
-- Data source
-- Time granularity
-- Supported fields
-- Date semantics
-- Calculation capability
-- Scope of the information they return
+We made tool descriptions more explicit instead of relying only on tool names.
 
-The agent therefore needs to distinguish which tool actually satisfies the information requirement, rather than simply choosing the tool with the most similar name or description.
+Each tool description clearly specified:
 
-User Query
-    ↓
-Required Information
-    ↓
-Available Tool Descriptions
-    ↓
-Select Best-Matching Tool
-    ↓
+DO
+
+- What the tool is intended for.
+- What type of questions it should be used for.
+- What data it returns.
+- Which inputs/parameters are expected.
+- The conditions under which the tool is appropriate.
+
+DON'T
+
+- What the tool should not be used for.
+- Unsupported use cases.
+- Similar questions that should be handled by another tool.
+- Data or calculations the tool cannot reliably provide.
+
+This gives the agent a clearer decision boundary when tools have overlapping descriptions.
+
+Tool Description
+       ↓
+  DO / DON'T Rules
+       ↓
+Understand Query Requirement
+       ↓
+Compare Available Tools
+       ↓
+Select Appropriate Tool
+       ↓
 Retrieve Evidence
-    ↓
-Reason Over Result
 
-Why This Matters
+We also kept the tool output grounded in the underlying source data, so the selected tool became the evidence source rather than allowing the LLM to fill missing information from its own knowledge.
 
-Choosing a semantically similar but incorrect tool can produce a plausible-looking answer from the wrong data.
+Example
 
-For financial systems, this can lead to errors such as:
+Instead of a vague description such as:
 
-- Using the wrong price series
-- Using the wrong date field
-- Using an incompatible data source
-- Missing required historical information
-- Producing a value that looks correct but is based on incorrect evidence
+"Gets price information."
 
-Therefore, tool selection is not just a naming problem — it is an evidence-selection problem.
+the tool description should establish its boundaries:
 
-## 4. Financial Date Semantics
+DO:
+- Use for supported historical/monthly price queries.
+- Use when the requested instrument and period are available.
 
-Financial datasets contain different date concepts such as trade date, settlement date, month-end close, and reporting period.
+DON'T:
+- Do not use for portfolio holdings.
+- Do not use for news-related questions.
+- Do not infer unavailable dates or prices.
 
-Incorrect date interpretation can produce numerically valid but semantically incorrect answers. We therefore treated date selection as part of the retrieval and verification process.
-
+This reduces incorrect tool selection and helps prevent downstream hallucination caused by retrieving the wrong evidence.
 ## 5. Numerical Accuracy
 
 Rounding, percentages, signs, aggregation, and derived metrics introduced another failure mode.
