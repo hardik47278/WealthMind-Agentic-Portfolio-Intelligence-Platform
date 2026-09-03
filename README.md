@@ -1,4 +1,4 @@
-# Challenges & Engineering Solutions
+in# Challenges & Engineering Solutions
 
 ## 1. Preventing Fabricated Financial Values
 
@@ -98,3 +98,158 @@ This prevents a common agentic failure mode:
 > «Forcing every query through an available tool and allowing the LLM to fill missing information with a guess.»
 
 The scope check therefore acts as an early guardrail before decomposition, tool execution, and answer generation.
+
+
+
+What Each Verification Check Does
+
+1. Numerical / Mathematical Verification
+
+Validates all numerical claims and derived financial calculations.
+
+- Recomputes values from source evidence.
+- Checks totals, percentages, ratios, averages, and other derived metrics.
+- Handles rounding and numerical tolerance.
+- Detects incorrect signs or arithmetic.
+- Prevents the LLM from inventing or modifying financial values.
+
+2. Semantic Verification
+
+Checks whether the generated answer actually answers the user's question.
+
+It validates:
+
+- Correct company / instrument / entity.
+- Correct financial metric.
+- Correct date or reporting period.
+- Correct interpretation of the question.
+- Correct relationship between the evidence and the generated claim.
+
+For example, if the question asks for 2025 revenue, evidence for 2024 revenue should not be accepted simply because the metric name matches.
+
+3. Citation Verification
+
+Checks whether citations attached to the answer are valid and actually support the associated claims.
+
+It verifies:
+
+- Citation exists when required.
+- Citation points to the relevant evidence.
+- Claim is supported by the cited source.
+- Required citation-count rules are satisfied.
+
+4. Provenance Verification
+
+Tracks where every important claim came from.
+
+Source Data
+    ↓
+Retrieved Evidence
+    ↓
+Claim
+    ↓
+DraftAnswer
+    ↓
+Final Answer
+
+This makes it possible to trace a financial value back to the underlying source rather than trusting the LLM's generated number.
+
+5. Consistency Verification
+
+Checks for contradictions between different pieces of evidence or generated claims.
+
+Examples:
+
+- Two specialists return different values.
+- The answer uses a different date from the retrieved evidence.
+- A percentage does not match the underlying amount.
+- A final conclusion contradicts an earlier claim.
+
+This is particularly important for multi-step financial questions.
+
+6. Abstention Judge
+
+The system should not always produce an answer.
+
+When evidence is incomplete, conflicting, unavailable, or insufficient to verify the claim:
+
+Evidence Insufficient
+        ↓
+   Abstention Judge
+        ↓
+      ABSTAIN
+
+The objective is to prefer abstention over fabricated information.
+
+---
+
+Numerical Verification Code Logic
+
+The important principle is that the LLM's calculation is treated as untrusted.
+
+def verify_numeric(draft_answer):
+
+    agent_value = draft_answer.value
+
+    verified_value = recompute(
+        evidence=draft_answer.evidence,
+        operation=draft_answer.operation
+    )
+
+    if approximately_equal(agent_value, verified_value):
+        return PASS
+
+    return FAIL
+
+For example:
+
+LLM Generated Value
+        ↓
+      27.40%
+        │
+        │ compare
+        ↓
+Independent Recalculation
+        ↓
+      27.38%
+        │
+        ↓
+Tolerance Check
+        │
+   ┌────┴────┐
+   ↓         ↓
+ PASS       FAIL
+
+The tolerance is important because financial calculations may involve legitimate rounding differences. However, a material mismatch should cause the claim to fail verification.
+
+---
+
+Verification Outcome
+
+The verifier ultimately produces one of three outcomes:
+
+                VERIFIER
+                    │
+        ┌───────────┼───────────┐
+        ↓           ↓           ↓
+     VERIFIED    REJECTED    ABSTAIN
+        │           │           │
+ Evidence +     Verification   Evidence
+ checks pass     failure        insufficient
+        │           │           │
+        ↓           ↓           ↓
+  Accept Answer  Reject Answer  Don't Guess
+
+VERIFIED → Evidence and verification checks support the answer.
+
+REJECTED → One or more verification checks fail.
+
+ABSTAIN → The system cannot establish sufficient evidence to safely answer.
+
+Key Design Principle
+
+«Generation is not acceptance.»
+
+The LLM is responsible for generating a candidate answer, while the verification layer independently determines whether that answer can be trusted.
+
+This separation is especially important in financial applications, where a fluent but incorrect numerical answer can be more dangerous than an explicit abstention.
