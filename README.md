@@ -1,4 +1,181 @@
-in# Challenges & Engineering Solutions
+Agents — Working & Core Logic
+
+The system uses specialized agents, where each agent is responsible for a specific financial domain and uses domain-specific tools to retrieve evidence.
+
+1. Supervisor Agent
+
+The Supervisor coordinates the overall task.
+
+Core responsibilities:
+
+- Understand the user's request.
+- Coordinate the required specialist agents.
+- Manage the flow of information between agents.
+- Collect specialist results.
+- Produce/coordinate the "DraftAnswer".
+- Pass the result to the verification layer.
+
+User Query
+    ↓
+Supervisor
+    ↓
+Specialist Agent(s)
+    ↓
+Collect Results
+    ↓
+DraftAnswer
+    ↓
+Verifier
+
+The Supervisor is primarily responsible for coordination, not for inventing financial data.
+
+---
+
+2. Book / Portfolio Agent
+
+The Book Agent handles portfolio and position-related questions.
+
+Handles:
+
+- Holdings
+- Positions
+- Quantities
+- Portfolio exposure
+- Concentration
+- Portfolio-level calculations
+- Book-related information
+
+Portfolio Question
+       ↓
+   Book Agent
+       ↓
+    Book Tool
+       ↓
+Portfolio Data
+       ↓
+Calculation / Reasoning
+       ↓
+Result + Evidence
+
+The agent retrieves portfolio facts from the Book data and reasons over those results rather than generating the values from its own knowledge.
+
+---
+
+3. Market Agent
+
+The Market Agent handles market-data-related questions.
+
+Handles:
+
+- Instruments
+- Prices
+- Historical/monthly prices
+- Market calculations
+- Supported currency/market information
+
+Market Question
+       ↓
+   Market Agent
+       ↓
+   Market Tool
+       ↓
+   Market Data
+       ↓
+Calculation / Reasoning
+       ↓
+Result + Evidence
+
+For numerical market information, the source data is treated as authoritative.
+
+---
+
+4. News Agent
+
+The News Agent handles questions requiring market or company news.
+
+Handles:
+
+- Relevant news
+- News events
+- News dates
+- Entity/instrument-related news
+- Supporting evidence and citations
+
+News Question
+      ↓
+  News Agent
+      ↓
+   News Tool
+      ↓
+Relevant News
+      ↓
+Reasoning
+      ↓
+Claim + Evidence
+
+The agent should only make claims supported by retrieved news evidence.
+
+---
+
+5. Agent Working Pattern
+
+Each specialist follows the general pattern:
+
+Receive Task
+     ↓
+Understand Required Information
+     ↓
+Select / Call Domain Tool
+     ↓
+Retrieve Evidence
+     ↓
+Reason Over Evidence
+     ↓
+Generate Result
+     ↓
+Attach Evidence / Provenance
+
+The important separation is:
+
+Agent = Reasoning + Coordination of Tool Usage
+Tool  = Data / Evidence Retrieval
+Verifier = Independent Validation
+
+Agents therefore do not need to be trusted simply because they produced a confident answer. Their output becomes a "DraftAnswer" that is subsequently verified.
+
+---
+
+6. Multi-Agent Working
+
+When a question requires multiple domains, multiple specialist agents can contribute independently.
+
+              Supervisor
+             /     |     \
+            ↓      ↓      ↓
+        Book Agent Market Agent News Agent
+            ↓      ↓      ↓
+          Book   Market   News
+        Evidence Evidence Evidence
+             \      |      /
+              ↓     ↓     ↓
+             Combined Evidence
+                    ↓
+               DraftAnswer
+                    ↓
+                 Verifier
+
+Each specialist result should preserve its own evidence, claims, calculations, and provenance so that one agent's output does not incorrectly overwrite another's.
+
+---
+
+Important Design Principle
+
+«Agents reason over retrieved evidence; they do not act as the source of truth.»
+
+The source data and tools provide the factual financial information, agents perform the required reasoning, and the verifier independently checks the resulting claims before the answer is accepted.
+
+
+#Challenges faced 
 
 ## 1. Preventing Fabricated Financial Values
 
