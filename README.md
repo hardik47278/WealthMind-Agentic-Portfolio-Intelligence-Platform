@@ -58,3 +58,40 @@ The system therefore separates workflow state from transient data and is designe
 Agent quality cannot be measured only by whether an answer sounds reasonable.
 
 We evaluated the system against predefined questions while considering correctness, evidence, citations, and execution deadlines, allowing individual failures to be traced back to retrieval, orchestration, calculation, or verification.
+
+Challenge: Scope-Aware Routing
+
+A key challenge was preventing the agent from attempting to answer questions outside the capabilities of the available financial tools.
+
+A naive router may try to route every query to the closest specialist, causing the system to produce unsupported or fabricated answers when the required data is unavailable.
+
+We introduced a scope-aware routing decision:
+
+User Query
+    ↓
+Router
+    ↓
+Is this within the system's supported scope?
+    ├── No → NOT_MY_SCOPE / Abstain
+    │
+    └── Yes
+          ↓
+     Query Decomposition
+          ↓
+     Specialist Routing
+          ↓
+     Evidence Retrieval
+          ↓
+     Verification
+          ↓
+     Final Answer
+
+For example, if the system only has access to financial market, portfolio, and news data, a question requiring unrelated information should not be forced into one of those specialists.
+
+Instead, the router returns a controlled NOT_MY_SCOPE outcome.
+
+This prevents a common agentic failure mode:
+
+«Forcing every query through an available tool and allowing the LLM to fill missing information with a guess.»
+
+The scope check therefore acts as an early guardrail before decomposition, tool execution, and answer generation.
