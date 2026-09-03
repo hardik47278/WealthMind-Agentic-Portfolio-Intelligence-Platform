@@ -483,3 +483,99 @@ Key Design Principle
 The LLM is responsible for generating a candidate answer, while the verification layer independently determines whether that answer can be trusted.
 
 This separation is especially important in financial applications, where a fluent but incorrect numerical answer can be more dangerous than an explicit abstention.
+
+
+Upstream Blackout & Offline Handling
+
+A major reliability challenge was handling upstream LLM/API blackouts. The system should not fail immediately when the upstream service becomes temporarily unavailable.
+
+We handled this through retry with exponential backoff and an offline execution path.
+
+Exponential Backoff
+
+For transient upstream failures, requests are retried with increasing delays rather than repeatedly hitting the unavailable service.
+
+Upstream Request
+      ↓
+    Failure
+      ↓
+   Retry #1
+      ↓
+    Wait
+      ↓
+   Retry #2
+      ↓
+   Longer Wait
+      ↓
+   Retry #3
+      ↓
+  ┌───────┴────────┐
+  ↓                ↓
+Success          Failure
+  ↓                ↓
+Continue      Offline / Fallback
+
+The delay increases between attempts, reducing unnecessary pressure on an unavailable upstream service.
+
+Conceptually:
+
+delay = base_delay
+
+for attempt in range(max_retries):
+    try:
+        return call_upstream()
+
+    except TransientError:
+        sleep(delay)
+        delay *= 2
+
+return fallback_or_offline_path()
+
+This protects the system from repeatedly hammering an unavailable upstream dependency.
+
+Offline Handling
+
+Because the assessment environment could operate without reliable upstream connectivity, we also supported an offline execution path.
+
+The offline mode relies on the locally available:
+
+- Book data
+- Market data
+- Local tools
+- Local configuration
+- Available model/LLM gateway
+
+This allows the core analysis workflow to continue without depending entirely on live external services.
+
+Request
+   ↓
+Upstream Available?
+   │
+ ┌─┴─────────┐
+ ↓           ↓
+YES          NO
+ ↓           ↓
+Normal       Retry
+Flow         + Backoff
+             ↓
+        Still Unavailable?
+             ↓
+        Offline Path
+             ↓
+       Local Execution
+
+Why This Matters
+
+A production-oriented agentic system must handle infrastructure failures separately from reasoning failures.
+
+An upstream blackout should result in:
+
+retry → backoff → fallback/offline execution → controlled failure or abstention
+
+rather than:
+
+upstream failure → agent failure → fabricated answer
+
+The key principle is:
+
+«Infrastructure failure must never be converted into a hallucinated answer.»
