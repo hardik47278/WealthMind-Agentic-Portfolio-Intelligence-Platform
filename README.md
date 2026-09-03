@@ -199,6 +199,47 @@ Many questions are not single-retrieval problems. They require identifying multi
 
 We addressed this through agentic planning and query decomposition rather than relying on a single retrieval step.
 
+Tool Selection & Similar Tools
+
+A key challenge in agentic systems is selecting the correct tool when multiple tools have similar or overlapping descriptions.
+
+For example, two tools may both appear relevant to a query, but differ in:
+
+- Data source
+- Time granularity
+- Supported fields
+- Date semantics
+- Calculation capability
+- Scope of the information they return
+
+The agent therefore needs to distinguish which tool actually satisfies the information requirement, rather than simply choosing the tool with the most similar name or description.
+
+User Query
+    ↓
+Required Information
+    ↓
+Available Tool Descriptions
+    ↓
+Select Best-Matching Tool
+    ↓
+Retrieve Evidence
+    ↓
+Reason Over Result
+
+Why This Matters
+
+Choosing a semantically similar but incorrect tool can produce a plausible-looking answer from the wrong data.
+
+For financial systems, this can lead to errors such as:
+
+- Using the wrong price series
+- Using the wrong date field
+- Using an incompatible data source
+- Missing required historical information
+- Producing a value that looks correct but is based on incorrect evidence
+
+Therefore, tool selection is not just a naming problem — it is an evidence-selection problem.
+
 ## 4. Financial Date Semantics
 
 Financial datasets contain different date concepts such as trade date, settlement date, month-end close, and reporting period.
