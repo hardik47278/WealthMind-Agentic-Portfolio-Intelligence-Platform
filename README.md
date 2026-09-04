@@ -579,3 +579,24 @@ upstream failure → agent failure → fabricated answer
 The key principle is:
 
 «Infrastructure failure must never be converted into a hallucinated answer.»
+
+## Safety & Reliability
+
+Because the system operates on client-specific financial data, we treated every generated output as untrusted until validated.
+
+Every output was tested against structured safety and correctness checks, including:
+
+- **Output validation** — responses were checked against the expected structured schema before being accepted.
+- **Grounding & provenance** — financial values were required to come from the underlying tools/data rather than being invented by the model.
+- **Numeric verification** — important calculated values were independently recomputed and checked before returning them.
+- **Citation verification** — citations were checked against the evidence used to produce the answer.
+- **Abstention** — when the available data could not support an answer, the system was designed to abstain rather than fabricate a value.
+- **Scope enforcement** — specialists could return `NOT_MY_SCOPE` instead of answering outside their domain, allowing the orchestrator to recover and reroute.
+- **Prompt-injection testing** — the system was tested against attempts to override agent instructions or manipulate tool usage.
+- **Data-leak testing** — client identifiers and sensitive information were checked to prevent unintended exposure.
+- **Fabrication testing** — repeated and unanswerable queries were used to test whether the system would invent financial values.
+- **Cross-client isolation testing** — queries were tested to ensure information from one client could not leak into another client's response.
+
+The principle was simple:
+
+> **If the system cannot support a claim with evidence, it should not confidently produce the claim.**
